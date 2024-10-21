@@ -17,7 +17,7 @@ public class Parcial {
 
     public static void main(String[] args) {
         do {
-            opc = Integer.parseInt(JOptionPane.showInputDialog(
+            String input = JOptionPane.showInputDialog(
                     "Gestión de Almacén\n"
                     + "[1] Registrar Productos\n"
                     + "[2] Mostrar Productos\n"
@@ -26,7 +26,28 @@ public class Parcial {
                     + "[5] Eliminar Producto\n"
                     + "[6] Ordenar Productos\n"
                     + "[7] Salir\n"
-                    + "Seleccione una opción:"));
+                    + "Seleccione una opción:");
+            
+            if (input == null) {
+                int confirm = JOptionPane.showConfirmDialog(
+                        null,
+                        "¿Estas seguro que deseas salir?",
+                        "Confirmar salida",
+                        JOptionPane.YES_NO_OPTION
+                );
+                if (confirm == JOptionPane.YES_OPTION) {
+                    break;
+                } else {
+                    continue;
+                }
+            }
+
+            try {
+                opc = Integer.parseInt(input);
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Por favor ingrese un número.");
+                continue;
+            }
 
             switch (opc) {
                 case 1:
@@ -235,6 +256,17 @@ public class Parcial {
                     + "[3] Cantidad\n"
                     + "[4] Precio\n"
                     + "[5] Proveedor"));
+            
+            String estadoOriginal = "Estado original:\n";
+            for (int i = 0; i < tam; i++) {
+                estadoOriginal += "ID: " + idProducto[i]
+                        + ", Nombre: " + nombreProducto[i]
+                        + ", Cantidad: " + cantidad[i]
+                        + ", Precio: " + precio[i]
+                        + ", Proveedor: " + proveedor[i]
+                        + ", Fecha Entrada: " + fechaEntrada[i]
+                        + ", Fecha Salida: " + fechaSalida[i] + "\n";
+            }
 
             for (int i = 0; i < tam - 1; i++) {
                 for (int j = i + 1; j < tam; j++) {
@@ -270,40 +302,60 @@ public class Parcial {
                             return;
                     }
                     if (intercambio) {
-                        // Intercambiar ID
-                        int tempID = idProducto[i];
-                        idProducto[i] = idProducto[j];
-                        idProducto[j] = tempID;
-                        // Intercambiar Nombre
-                        String tempNombre = nombreProducto[i];
-                        nombreProducto[i] = nombreProducto[j];
-                        nombreProducto[j] = tempNombre;
-                        // Intercambiar Cantidad
-                        int tempCantidad = cantidad[i];
-                        cantidad[i] = cantidad[j];
-                        cantidad[j] = tempCantidad;
-                        // Intercambiar Precio
-                        double tempPrecio = precio[i];
-                        precio[i] = precio[j];
-                        precio[j] = tempPrecio;
-                        // Intercambiar Proveedor
-                        String tempProveedor = proveedor[i];
-                        proveedor[i] = proveedor[j];
-                        proveedor[j] = tempProveedor;
-                        // Intercambiar Fecha Entrada
-                        String tempFechaEntrada = fechaEntrada[i];
-                        fechaEntrada[i] = fechaEntrada[j];
-                        fechaEntrada[j] = tempFechaEntrada;
-                        // Intercambiar Fecha Salida
-                        String tempFechaSalida = fechaSalida[i];
-                        fechaSalida[i] = fechaSalida[j];
-                        fechaSalida[j] = tempFechaSalida;
+                        intercambiarProductos(i, j);
                     }
                 }
             }
+            
+            String estadoOrdenado = "Estado ordenado:\n";
+            for (int i = 0; i < tam; i++) {
+                estadoOrdenado += "ID: " + idProducto[i]
+                        + ", Nombre: " + nombreProducto[i]
+                        + ", Cantidad: " + cantidad[i]
+                        + ", Precio: " + precio[i]
+                        + ", Proveedor: " + proveedor[i]
+                        + ", Fecha Entrada: " + fechaEntrada[i]
+                        + ", Fecha Salida: " + fechaSalida[i] + "\n";
+            }
+
             JOptionPane.showMessageDialog(null, "Productos ordenados exitosamente.");
+            // Mostrar los estados original y ordenado
+            JOptionPane.showMessageDialog(null, estadoOriginal);
+            JOptionPane.showMessageDialog(null, estadoOrdenado);
+            
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Error en la entrada de datos. Por favor, intente nuevamente.");
         }
+    }
+    
+    private static void intercambiarProductos(int i, int j) {
+        // Intercambiar ID
+        int tempID = idProducto[i];
+        idProducto[i] = idProducto[j];
+        idProducto[j] = tempID;
+        // Intercambiar Nombre
+        String tempNombre = nombreProducto[i];
+        nombreProducto[i] = nombreProducto[j];
+        nombreProducto[j] = tempNombre;
+        // Intercambiar Cantidad
+        int tempCantidad = cantidad[i];
+        cantidad[i] = cantidad[j];
+        cantidad[j] = tempCantidad;
+        // Intercambiar Precio
+        double tempPrecio = precio[i];
+        precio[i] = precio[j];
+        precio[j] = tempPrecio;
+        // Intercambiar Proveedor
+        String tempProveedor = proveedor[i];
+        proveedor[i] = proveedor[j];
+        proveedor[j] = tempProveedor;
+        // Intercambiar Fecha Entrada
+        String tempFechaEntrada = fechaEntrada[i];
+        fechaEntrada[i] = fechaEntrada[j];
+        fechaEntrada[j] = tempFechaEntrada;
+        // Intercambiar Fecha Salida
+        String tempFechaSalida = fechaSalida[i];
+        fechaSalida[i] = fechaSalida[j];
+        fechaSalida[j] = tempFechaSalida;
     }
 }
